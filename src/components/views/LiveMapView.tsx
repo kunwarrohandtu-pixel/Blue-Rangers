@@ -1,11 +1,60 @@
-import { useState } from 'react';
-import { mapMarkers, alerts } from '@/data/mockData';
-import { MapMarker } from '@/components/MapMarker';
+import { useState, useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import { mapMarkers, alerts, MapMarker as MapMarkerType } from '@/data/mockData';
 import { HUDCards, WeatherWidget } from '@/components/HUDCards';
 import { AlertsSidebar } from '@/components/AlertsSidebar';
 import { SiteDetailsDrawer } from '@/components/SiteDetailsDrawer';
 import { BottomTicker } from '@/components/BottomTicker';
-import { MapMarker as MapMarkerType } from '@/data/mockData';
+
+// Custom marker icons
+const createCustomIcon = (status: 'healthy' | 'warning' | 'critical') => {
+  const colors = {
+    healthy: { bg: '#00ff88', shadow: 'rgba(0, 255, 136, 0.6)' },
+    warning: { bg: '#ffd700', shadow: 'rgba(255, 215, 0, 0.6)' },
+    critical: { bg: '#ff3366', shadow: 'rgba(255, 51, 102, 0.6)' },
+  };
+
+  const color = colors[status];
+  const size = status === 'critical' ? 16 : 14;
+
+  return L.divIcon({
+    className: `custom-marker-${status}`,
+    html: `<div style="
+      width: ${size}px;
+      height: ${size}px;
+      background: ${color.bg};
+      border-radius: 50%;
+      box-shadow: 0 0 15px ${color.shadow};
+      border: 2px solid ${color.bg};
+      ${status === 'critical' ? 'animation: pulse-glow 2s ease-in-out infinite;' : ''}
+    "></div>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
+};
+
+// Map bounds for Andaman Islands
+const andamanBounds: L.LatLngBoundsExpression = [
+  [10.5, 92.0], // Southwest
+  [14.0, 94.0], // Northeast
+];
+
+const andamanCenter: L.LatLngExpression = [12.2, 92.9];
+
+// Component to set map view and bounds
+const MapController = () => {
+  const map = useMap();
+
+  useEffect(() => {
+    map.setMaxBounds(andamanBounds);
+    map.setMinZoom(7);
+    map.setMaxZoom(14);
+  }, [map]);
+
+  return null;
+};
 
 export const LiveMapView = () => {
   const [selectedMarker, setSelectedMarker] = useState<MapMarkerType | null>(null);
@@ -25,54 +74,64 @@ export const LiveMapView = () => {
 
   return (
     <div className="relative w-full h-[calc(100vh-4rem)] overflow-hidden">
-      {/* Map Background with Grid Overlay */}
-      <div className="absolute inset-0 bg-ocean-gradient">
-        {/* Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-30"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(100, 255, 218, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(100, 255, 218, 0.03) 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
-          }}
-        />
-        
-        {/* Simulated Island Shapes */}
-        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          {/* Main Andaman Island Shape */}
-          <path
-            d="M 10 15 Q 15 10, 20 15 Q 25 20, 22 30 Q 25 40, 20 50 Q 18 60, 22 70 L 18 75 Q 12 70, 10 60 Q 8 50, 12 40 Q 10 30, 10 15 Z"
-            fill="rgba(34, 84, 61, 0.4)"
-            stroke="rgba(100, 255, 218, 0.2)"
-            strokeWidth="0.3"
+      {/* Leaflet Map */}
+      <div className="absolute inset-0 z-0">
+        <MapContainer
+          center={andamanCenter}
+          zoom={8}
+          style={{ width: '100%', height: '100%' }}
+          zoomControl={false}
+          attributionControl={true}
+        >
+          <MapController />
+          
+          {/* ESRI World Imagery (Satellite) */}
+          <TileLayer
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            attribution='&copy; <a href="https://www.esri.com/">Esri</a>'
           />
-          {/* Middle Islands */}
-          <ellipse cx="35" cy="48" rx="8" ry="12" fill="rgba(34, 84, 61, 0.35)" stroke="rgba(100, 255, 218, 0.15)" strokeWidth="0.2" />
-          <ellipse cx="48" cy="60" rx="6" ry="8" fill="rgba(34, 84, 61, 0.35)" stroke="rgba(100, 255, 218, 0.15)" strokeWidth="0.2" />
-          <ellipse cx="58" cy="68" rx="5" ry="6" fill="rgba(34, 84, 61, 0.35)" stroke="rgba(100, 255, 218, 0.15)" strokeWidth="0.2" />
-          {/* Havelock Area */}
-          <ellipse cx="62" cy="58" rx="8" ry="10" fill="rgba(34, 84, 61, 0.4)" stroke="rgba(100, 255, 218, 0.2)" strokeWidth="0.3" />
-          {/* North Islands */}
-          <ellipse cx="72" cy="25" rx="6" ry="8" fill="rgba(34, 84, 61, 0.35)" stroke="rgba(100, 255, 218, 0.15)" strokeWidth="0.2" />
-          <ellipse cx="78" cy="42" rx="5" ry="6" fill="rgba(34, 84, 61, 0.35)" stroke="rgba(100, 255, 218, 0.15)" strokeWidth="0.2" />
-          {/* South Islands */}
-          <ellipse cx="70" cy="72" rx="7" ry="9" fill="rgba(34, 84, 61, 0.4)" stroke="rgba(100, 255, 218, 0.2)" strokeWidth="0.3" />
-          <ellipse cx="58" cy="82" rx="4" ry="5" fill="rgba(34, 84, 61, 0.35)" stroke="rgba(100, 255, 218, 0.15)" strokeWidth="0.2" />
-        </svg>
+        
+        {/* Semi-transparent overlay for ocean depth effect */}
+        <TileLayer
+          url="https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}.png"
+          attribution=""
+          opacity={0.1}
+        />
 
-        {/* Ocean depth gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-blue-900/10 to-blue-950/30 pointer-events-none" />
+        {/* Markers */}
+        {mapMarkers.map((marker) => (
+          <Marker
+            key={marker.id}
+            position={[marker.lat, marker.lng]}
+            icon={createCustomIcon(marker.status)}
+            eventHandlers={{
+              click: () => handleMarkerClick(marker),
+            }}
+          >
+            <Popup className="custom-popup">
+              <div className="text-sm">
+                <div className="font-bold text-foreground">{marker.siteName}</div>
+                <div className="text-muted-foreground">{marker.location}</div>
+                <div className={`mt-1 text-xs font-medium uppercase ${
+                  marker.status === 'critical' ? 'text-reef-critical' :
+                  marker.status === 'warning' ? 'text-reef-warning' : 'text-reef-healthy'
+                }`}>
+                  {marker.status}
+                </div>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+        </MapContainer>
       </div>
+
+      {/* Dark overlay gradient for edges */}
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-r from-ocean-deep/30 via-transparent to-ocean-deep/50 z-[5]" />
+      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-ocean-deep/20 via-transparent to-ocean-deep/40 z-[5]" />
 
       {/* HUD Elements */}
       <HUDCards totalSites={42} criticalAlerts={criticalCount} activeRangers={8} />
       <WeatherWidget />
-
-      {/* Map Markers */}
-      <div className="absolute inset-0 right-80">
-        {mapMarkers.map((marker) => (
-          <MapMarker key={marker.id} marker={marker} onClick={handleMarkerClick} />
-        ))}
-      </div>
 
       {/* Alerts Sidebar */}
       <AlertsSidebar alerts={alerts} />

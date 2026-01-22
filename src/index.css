@@ -218,6 +218,60 @@
   }
 }
 
+/* Leaflet Custom Styles */
+.leaflet-container {
+  background: hsl(var(--ocean-deep)) !important;
+  font-family: inherit;
+}
+
+.leaflet-control-zoom {
+  border: 1px solid hsl(var(--ocean-glow) / 0.3) !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+.leaflet-control-zoom a {
+  background: hsl(var(--ocean-surface) / 0.9) !important;
+  color: hsl(var(--ocean-glow)) !important;
+  border-bottom: 1px solid hsl(var(--ocean-glow) / 0.2) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background: hsl(var(--ocean-surface)) !important;
+}
+
+.leaflet-control-attribution {
+  background: hsl(var(--ocean-surface) / 0.8) !important;
+  color: hsl(var(--text-muted)) !important;
+  font-size: 10px !important;
+}
+
+.leaflet-control-attribution a {
+  color: hsl(var(--ocean-glow)) !important;
+}
+
+.custom-marker-healthy {
+  background: hsl(150, 100%, 50%);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
+  border: 2px solid rgba(0, 255, 136, 0.8);
+}
+
+.custom-marker-warning {
+  background: hsl(45, 100%, 50%);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  border: 2px solid rgba(255, 215, 0, 0.8);
+}
+
+.custom-marker-critical {
+  background: hsl(344, 100%, 60%);
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255, 51, 102, 0.6);
+  border: 2px solid rgba(255, 51, 102, 0.8);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
 }

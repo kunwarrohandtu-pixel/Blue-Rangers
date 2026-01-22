@@ -2,8 +2,8 @@ export type MarkerStatus = 'healthy' | 'warning' | 'critical';
 
 export interface MapMarker {
   id: string;
-  x: number;
-  y: number;
+  lat: number;
+  lng: number;
   status: MarkerStatus;
   siteName: string;
   location: string;
@@ -41,22 +41,23 @@ export interface ChartDataPoint {
   hasEvent?: boolean;
 }
 
+// Real coordinates for Andaman Islands reef monitoring sites
 export const mapMarkers: MapMarker[] = [
-  { id: '1', x: 12, y: 18, status: 'healthy', siteName: 'North Andaman', location: 'Diglipur Point' },
-  { id: '2', x: 15, y: 32, status: 'healthy', siteName: 'Interview Island', location: 'West Shore' },
-  { id: '3', x: 10, y: 48, status: 'healthy', siteName: 'Mayabunder', location: 'Karmatang Beach' },
-  { id: '4', x: 18, y: 55, status: 'warning', siteName: 'Rangat Bay', location: 'Amkunj Beach' },
-  { id: '5', x: 25, y: 62, status: 'healthy', siteName: 'Baratang', location: 'Mud Volcano Point' },
-  { id: '6', x: 35, y: 45, status: 'healthy', siteName: 'Middle Andaman', location: 'Strait Island' },
-  { id: '7', x: 42, y: 52, status: 'warning', siteName: 'Long Island', location: 'Lalaji Bay' },
-  { id: '8', x: 48, y: 58, status: 'healthy', siteName: 'Neil Island', location: 'Bharatpur Beach' },
-  { id: '9', x: 55, y: 65, status: 'healthy', siteName: 'Havelock South', location: 'Radhanagar Beach' },
-  { id: '10', x: 62, y: 55, status: 'critical', siteName: 'Havelock North', location: 'Elephant Beach' },
-  { id: '11', x: 70, y: 20, status: 'critical', siteName: 'Smith Island', location: 'Coral Reef Zone' },
-  { id: '12', x: 75, y: 35, status: 'healthy', siteName: 'Ross Island', location: 'Historic Point' },
-  { id: '13', x: 80, y: 50, status: 'warning', siteName: 'Port Blair', location: 'Corbyn Cove' },
-  { id: '14', x: 72, y: 70, status: 'critical', siteName: 'Rutland Island', location: 'South Bay' },
-  { id: '15', x: 60, y: 80, status: 'healthy', siteName: 'Cinque Island', location: 'Passage Rock' },
+  { id: '1', lat: 13.2667, lng: 92.9833, status: 'healthy', siteName: 'North Andaman', location: 'Diglipur Point' },
+  { id: '2', lat: 13.0500, lng: 92.7167, status: 'healthy', siteName: 'Interview Island', location: 'West Shore' },
+  { id: '3', lat: 12.7500, lng: 92.9000, status: 'healthy', siteName: 'Mayabunder', location: 'Karmatang Beach' },
+  { id: '4', lat: 12.5000, lng: 92.9333, status: 'warning', siteName: 'Rangat Bay', location: 'Amkunj Beach' },
+  { id: '5', lat: 12.1000, lng: 92.7500, status: 'healthy', siteName: 'Baratang', location: 'Mud Volcano Point' },
+  { id: '6', lat: 12.2667, lng: 93.0333, status: 'healthy', siteName: 'Middle Andaman', location: 'Strait Island' },
+  { id: '7', lat: 12.0833, lng: 93.0167, status: 'warning', siteName: 'Long Island', location: 'Lalaji Bay' },
+  { id: '8', lat: 11.8333, lng: 93.0500, status: 'healthy', siteName: 'Neil Island', location: 'Bharatpur Beach' },
+  { id: '9', lat: 11.9667, lng: 93.0000, status: 'healthy', siteName: 'Havelock South', location: 'Radhanagar Beach' },
+  { id: '10', lat: 12.0167, lng: 93.0167, status: 'critical', siteName: 'Havelock North', location: 'Elephant Beach' },
+  { id: '11', lat: 13.0833, lng: 93.0500, status: 'critical', siteName: 'Smith Island', location: 'Coral Reef Zone' },
+  { id: '12', lat: 11.6833, lng: 92.7667, status: 'healthy', siteName: 'Ross Island', location: 'Historic Point' },
+  { id: '13', lat: 11.6667, lng: 92.7500, status: 'warning', siteName: 'Port Blair', location: 'Corbyn Cove' },
+  { id: '14', lat: 11.4500, lng: 92.7833, status: 'critical', siteName: 'Rutland Island', location: 'South Bay' },
+  { id: '15', lat: 11.3000, lng: 92.7167, status: 'healthy', siteName: 'Cinque Island', location: 'Passage Rock' },
 ];
 
 export const alerts: Alert[] = [

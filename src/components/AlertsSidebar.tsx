@@ -15,7 +15,7 @@ export const AlertsSidebar = ({ alerts }: AlertsSidebarProps) => {
   };
 
   return (
-    <div className="absolute top-0 right-0 w-80 h-full glass-panel rounded-l-lg border-l border-primary/20 p-4 overflow-y-auto z-10">
+    <div className="absolute top-0 right-0 w-80 h-full glass-panel rounded-l-lg border-l border-primary/20 p-4 overflow-y-auto z-20">
       <h2 className="text-lg font-bold text-foreground mb-4">Live Alerts & Data</h2>
       
       {/* Alerts List */}

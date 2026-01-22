@@ -8,7 +8,7 @@ interface HUDCardsProps {
 
 export const HUDCards = ({ totalSites, criticalAlerts, activeRangers }: HUDCardsProps) => {
   return (
-    <div className="absolute top-4 left-4 flex gap-3 z-10">
+    <div className="absolute top-4 left-4 flex gap-3 z-20">
       <div className="hud-card animate-fade-in">
         <Waves className="w-5 h-5 text-primary" />
         <div>
@@ -38,7 +38,7 @@ export const HUDCards = ({ totalSites, criticalAlerts, activeRangers }: HUDCards
 
 export const WeatherWidget = () => {
   return (
-    <div className="absolute top-4 right-[340px] z-10">
+    <div className="absolute top-4 right-[340px] z-20">
       <div className="hud-card animate-fade-in" style={{ animationDelay: '300ms' }}>
         <Thermometer className="w-6 h-6 text-reef-warning" />
         <div>
