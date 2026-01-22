@@ -1,12 +1,39 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { Navigation } from '@/components/Navigation';
+import { LiveMapView } from '@/components/views/LiveMapView';
+import { AnalyticsView } from '@/components/views/AnalyticsView';
+import { RangerLogsView } from '@/components/views/RangerLogsView';
+import { AlertsView } from '@/components/views/AlertsView';
+import { alerts } from '@/data/mockData';
 
 const Index = () => {
+  const [activeTab, setActiveTab] = useState('Live Map');
+
+  const renderView = () => {
+    switch (activeTab) {
+      case 'Live Map':
+        return <LiveMapView />;
+      case 'Analytics':
+        return <AnalyticsView />;
+      case 'Ranger Logs':
+        return <RangerLogsView />;
+      case 'Alerts':
+        return <AlertsView />;
+      default:
+        return <LiveMapView />;
+    }
+  };
+
+  const criticalAlertCount = alerts.filter((a) => a.severity === 'critical').length;
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-ocean-deep">
+      <Navigation
+        activeTab={activeTab}
+        onTabChange={setActiveTab}
+        alertCount={criticalAlertCount}
+      />
+      <main>{renderView()}</main>
     </div>
   );
 };
